@@ -8,10 +8,13 @@ import com.seig.zsy.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.seig.zsy.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -55,5 +58,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
             return ResponseResult.error(e.getMessage());
 
         }
+    }
+
+    public void logout() {
+        // 获取当前认证信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            // 假设我们在JWT创建时，将JWT ID或者用户名作为键保存在Redis中
+            String userName = authentication.getName();
+            // 根据用户名删除Redis中的数据
+//            StringRedisTemplate.("USER_TOKEN:" + userName);
+        }
+        // 清除认证信息
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

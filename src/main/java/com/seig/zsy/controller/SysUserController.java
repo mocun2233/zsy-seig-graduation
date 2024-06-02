@@ -28,5 +28,11 @@ public class SysUserController {
     @PostMapping("/login")
     public ResponseResult login(@RequestBody SysUser user) {
         return loginService.login(user);
+
+    }
+    @PostMapping("/logout")
+    public ResponseResult logout() {
+        loginService.logout();
+        return ResponseResult.success(1);
     }
 }
